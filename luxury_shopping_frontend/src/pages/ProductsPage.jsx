@@ -10,7 +10,7 @@ export default function ProductsPage() {
     const { addToCart } = useCart();
 
     useEffect(() => {
-        fetch('http://localhost:8000/api/products')
+        fetch('http://localhost:5500/api/products')
             .then(res => res.json())
             .then(data => {
                 setProducts(data);
@@ -33,8 +33,7 @@ export default function ProductsPage() {
                     <div className="product-card" key={p._id}>
                         <img src={p.imageUrl} alt={p.name} style={{maxWidth:200, margin: "auto", display: "block",}} />
                         <h3>{p.name}</h3>
-                        <p>{p.content}</p>
-                        <p>{p.price}</p>
+                        
                         <Link to={`/products/${p._id}`}>View</Link>
                         <button onClick={() => addToCart(p)} style={{marginLeft: '10px'}}>Add to Cart</button>
                     </div>

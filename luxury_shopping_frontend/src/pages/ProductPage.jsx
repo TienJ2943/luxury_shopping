@@ -12,7 +12,7 @@ export default function ProductPage() {
     const { addToCart } = useCart();
 
     useEffect(() => {
-        fetch(`http://localhost:8000/api/products/id/${id}`)
+        fetch(`http://localhost:5500/api/products/id/${id}`)
             .then(res => res.json())
             .then(data => {
                 if (data.error) {
@@ -32,7 +32,7 @@ export default function ProductPage() {
         e.preventDefault();
         setSubmitting(true);
         try {
-            const res = await fetch(`http://localhost:8000/api/products/${encodeURIComponent(product.name)}/comments`, {
+            const res = await fetch(`http://localhost:5500/api/products/${encodeURIComponent(product.name)}/comments`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(commentForm)
@@ -40,7 +40,7 @@ export default function ProductPage() {
             const data = await res.json();
             if (res.ok) {
                 // Refresh product data
-                const updatedRes = await fetch(`http://localhost:8000/api/products/id/${id}`);
+                const updatedRes = await fetch(`http://localhost:5500/api/products/id/${id}`);
                 const updatedProduct = await updatedRes.json();
                 setProduct(updatedProduct);
                 setCommentForm({ postedBy: '', text: '' });

@@ -25,7 +25,7 @@ export default function CartPage() {
                 customerEmail: customerInfo.email
             };
 
-            const res = await fetch('http://localhost:8000/api/orders', {
+            const res = await fetch('http://localhost:5500/api/orders', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(order)

@@ -42,7 +42,7 @@
 }
 
 .products-grid {
-  display: list-item;
+  display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
   margin-top: 2rem;
@@ -51,12 +51,15 @@
 }
 
 .product-card {
-  border: 1px solid #ddd;
+  border: 4px solid #ece3d2;
   padding: 1rem;
   border-radius: 8px;
-  background-color: white;
-  text-align: left;
+  background-color: #7a8450;
+  text-align: center;
   transition: transform 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .product-card:hover {
