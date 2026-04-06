@@ -15,16 +15,12 @@ mongoose.connect('mongodb://localhost:27017/luxury_shopping').then(async () => {
   console.error('MongoDB connection error:', err);
 });
 
-// Seed products if DB is empty
+// Seed products from the source file and replace any old product data
 async function seedProducts() {
   try {
-    for (const prod of productInfo) {
-      const existing = await Product.findOne({ name: prod.name });
-      if (!existing) {
-        await Product.create(prod);
-        console.log(`Seeded product: ${prod.name}`);
-      }
-    }
+    await Product.deleteMany({});
+    await Product.insertMany(productInfo);
+    console.log('Products seeded successfully');
   } catch (err) {
     console.error('Seeding error:', err);
   }
@@ -32,6 +28,7 @@ async function seedProducts() {
 
 // Define Product schema
 const productSchema = new mongoose.Schema({
+  id: Number,
   name: String,
   price: String,
   imageUrl: String,
@@ -158,6 +155,6 @@ app.delete('/api/orders/:id', async (req, res) => {
   }
 });
 
-app.listen(8000, '0.0.0.0', function() {
-    console.log('Server is running on port 8000');
+app.listen(5500, '0.0.0.0', function() {
+    console.log('Server is running on port 5500');
 });
