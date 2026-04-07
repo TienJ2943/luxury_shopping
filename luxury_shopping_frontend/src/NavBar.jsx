@@ -4,7 +4,7 @@ import './App.css';
 export default function NavBar() {
     return (
         <div className="site-header">
-            <h1 className="site-title">Matcha Matcha</h1>
+            <h1 className="site-title">Neo got your Mac-cha</h1>
             <nav className="navbar">
                 <ul>
                     <li><Link to='/'>Home</Link></li>
