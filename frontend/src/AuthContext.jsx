@@ -22,6 +22,18 @@ export function AuthProvider({ children }) {
     refreshUser();
   }, []);
 
+  async function updateAccount(formData) {
+  const data = await apiFetch('/api/auth/me', {
+    method: 'PUT',
+    body: JSON.stringify(formData),
+  });
+
+  setUser(data.user);
+  setStoredAuth(data.token, data.user);
+
+  return data;
+}
+
   async function register(formData) {
     setLoading(true);
     try {
@@ -58,7 +70,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, register, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, register, login, logout, updateAccount }}>
       {children}
     </AuthContext.Provider>
   );

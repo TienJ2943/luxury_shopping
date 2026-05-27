@@ -22,13 +22,10 @@ export function getStoredUser() {
 export function resolveAssetUrl(url) {
   if (!url) return '';
 
-  // Full external URL
   if (url.startsWith('http://') || url.startsWith('https://')) {
     return url;
   }
 
-  // Admin-uploaded backend images
-  // Example: /uploads/171234-matcha.jpg
   if (url.startsWith('/uploads/')) {
     return `${API_BASE_URL}${url}`;
   }
@@ -37,8 +34,7 @@ export function resolveAssetUrl(url) {
     return `${API_BASE_URL}/${url}`;
   }
 
-  // Frontend public images
-  // Example: /images/IMG_3814.jpg
+
   if (url.startsWith('/images/')) {
     return url;
   }
@@ -47,7 +43,6 @@ export function resolveAssetUrl(url) {
     return `/${url}`;
   }
 
-  // Fallback for other public files
   if (url.startsWith('/')) {
     return url;
   }

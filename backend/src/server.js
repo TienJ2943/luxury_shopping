@@ -450,12 +450,70 @@ app.get('/api/auth/me', requireAuth, async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+app.put('/api/auth/me', requireAuth, async (req, res) => {
+  try {
+    const { name, email, currentPassword, newPassword } = req.body;
 
-// -----------------------------
-// Product routes
-// -----------------------------
+    const user = await User.findById(req.user.id);
 
-// READ all products + live search
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    if (name) {
+      user.name = name;
+    }
+
+    if (email && email !== user.email) {
+      const existingEmail = await User.findOne({
+        email: email.toLowerCase(),
+        _id: { $ne: user._id },
+      });
+
+      if (existingEmail) {
+        return res.status(409).json({ error: 'Email is already in use' });
+      }
+
+      user.email = email.toLowerCase();
+    }
+
+    if (newPassword) {
+      if (!currentPassword) {
+        return res.status(400).json({
+          error: 'Current password is required to change password',
+        });
+      }
+
+      const passwordOk = await bcrypt.compare(
+        currentPassword,
+        user.passwordHash
+      );
+
+      if (!passwordOk) {
+        return res.status(401).json({ error: 'Current password is incorrect' });
+      }
+
+      if (newPassword.length < 6) {
+        return res.status(400).json({
+          error: 'New password must be at least 6 characters',
+        });
+      }
+
+      user.passwordHash = await bcrypt.hash(newPassword, 10);
+    }
+
+    await user.save();
+
+    res.json({
+      message: 'Account updated successfully',
+      user: serialiseUser(user),
+      token: createToken(user),
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get('/api/products', async (req, res) => {
   try {
     const { search } = req.query;
@@ -629,10 +687,6 @@ app.post('/api/products/:id/comments', async (req, res) => {
   }
 });
 
-// -----------------------------
-// Shopping cart routes
-// -----------------------------
-
 // READ current user's cart
 app.get('/api/cart', requireAuth, async (req, res) => {
   try {
@@ -776,10 +830,6 @@ app.get('/api/admin/shopping-carts', requireAuth, requireAdmin, async (req, res)
     res.status(500).json({ error: err.message });
   }
 });
-
-// -----------------------------
-// Order routes
-// -----------------------------
 
 // Admin READ all orders
 app.get('/api/orders', requireAuth, requireAdmin, async (req, res) => {
