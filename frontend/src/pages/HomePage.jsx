@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 export default function HomePage() {
   return (
-    <section className="hero">
+    <section className="hero" align="center" justify="center" text="center">
       <div>
         <h1>Neo got your Mac-cha</h1>
         <p>

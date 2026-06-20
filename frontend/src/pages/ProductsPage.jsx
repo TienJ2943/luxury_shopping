@@ -76,7 +76,9 @@ export default function ProductsPage() {
           <article className="product-card" key={product._id}>
             {product.imageUrl && <img src={resolveAssetUrl(product.imageUrl)} alt={product.name} />}
             <h3>{product.name}</h3>
-            <p className="price">{product.price}</p>
+            <p className="price" justify="center">
+              {product.price}
+            </p>
             <div className="card-actions">
               <Link className="button secondary" to={`/products/${product._id}`}>View</Link>
               <button className="button" onClick={() => handleAddToCart(product)}>Add to Cart</button>
